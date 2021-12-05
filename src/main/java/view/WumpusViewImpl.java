@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -45,7 +46,8 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
     private boolean gameStarting = true;
     private int[] intendedCavesToShoot = new int[]{};
     private double animationColorFraction;
-    private int[] actualCavesShot = new int[] {};
+    private int[] actualPlayerCavesShot = new int[]{};
+    private int[] enemyPlayerCavesShot = new int[]{};
     private final int animationDuration = 1000;
 
     public WumpusViewImpl() {
@@ -259,10 +261,16 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
     }
 
     private void animateActuallyShotCaves() {
-        g.setColor(new Color(0, 0, 0, 1 - (float) animationColorFraction));
-        for (int cave : actualCavesShot) {
+        animateTheseCaves(actualPlayerCavesShot, new Color(0, 0, 0, 1 - (float) animationColorFraction));
+
+        animateTheseCaves(enemyPlayerCavesShot, new Color(0, 1, 1, 1 - (float) animationColorFraction));
+    }
+
+    private void animateTheseCaves(int[] enemyPlayerCavesShot, Color color) {
+        g.setColor(color);
+        for (int cave : enemyPlayerCavesShot) {
             int[] caveCoordinates = cavesCoordinates[cave];
-            g.fillOval(caveCoordinates[0], caveCoordinates[1], getCaveSize(), getCaveSize());
+            g.fillOval(caveCoordinates[0], caveCoordinates[1], caveSize, caveSize);
         }
     }
 
@@ -298,14 +306,22 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
                 g.drawString("& " + messages.get(3), 20, getHeight() - 17);
             }
 
-            if (actualCavesShot.length > 0) {
-                String shotCavesMessage = Arrays.stream(actualCavesShot)
-                        .mapToObj(String::valueOf)
-                        .collect(joining(" -> ", "You actually shot at cave(s): ", ""));
-                g.drawString(shotCavesMessage, 20, getHeight() - 40);
+            drawShotCavesMessage(actualPlayerCavesShot, "You shot cave(s): ", 40);
+
+            if (CHEAT_MODE) {
+                drawShotCavesMessage(enemyPlayerCavesShot, "Enemy shot cave(s): ", 20);
             }
 
             messages.clear();
+        }
+    }
+
+    private void drawShotCavesMessage(int[] shotCavesArray, String message, int bottomOffset) {
+        if (shotCavesArray.length > 0) {
+            String shotCavesMessage = Arrays.stream(shotCavesArray)
+                    .mapToObj(String::valueOf)
+                    .collect(joining(", ", message, ""));
+            g.drawString(shotCavesMessage, PANEL_WIDTH / 2, getHeight() - bottomOffset);
         }
     }
 
@@ -315,12 +331,13 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
         final double animationDurationFraction = runningTime * 1.0 / animationDuration;
 
         if (animationDurationFraction >= 1) {
-            actualCavesShot = new int[]{};
+            actualPlayerCavesShot = new int[]{};
+            enemyPlayerCavesShot = new int[]{};
             return;
         }
 
         render();
-        animationColorFraction = Math.min(1, animationDurationFraction);
+        animationColorFraction = Math.min(0.8, animationDurationFraction);
     }
 
     private void drawMap() throws IOException {
@@ -344,7 +361,10 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
     }
 
     public void move(int cave) {
-        wumpusPresenter.move(cave);
+        final Map<String, int[]> playerCavesMap = wumpusPresenter.move(cave);
+        actualPlayerCavesShot = playerCavesMap.get("player");
+        enemyPlayerCavesShot = playerCavesMap.get("enemy player");
+        animationStartTime = (System.nanoTime() / 1000000);
     }
 
     public void setMode(Mode newMode) {
@@ -355,8 +375,9 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
         if (caves.length == 0) {
             return;
         }
-        actualCavesShot = wumpusPresenter.shoot(caves);
-
+        final Map<String, int[]> playerCavesMap = wumpusPresenter.shoot(caves);
+        actualPlayerCavesShot = playerCavesMap.get("player");
+        enemyPlayerCavesShot = playerCavesMap.get("enemy player");
         animationStartTime = (System.nanoTime() / 1000000);
     }
 

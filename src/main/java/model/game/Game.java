@@ -1,11 +1,12 @@
 package model.game;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Game {
      void startGame();
-     void playerMovesToCave(int cave);
-     int[] playerShootsToCave(int... cave);
+     Map<String, int[]> playerMovesToCave(int cave);
+     Map<String, int[]> playerShootsToCave(int... cave);
      boolean isGameOver();
      int getNumberOfArrows();
      List<String> getWarnings();

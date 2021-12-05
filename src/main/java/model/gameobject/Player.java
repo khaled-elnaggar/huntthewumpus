@@ -12,6 +12,7 @@ public class Player extends GameObject implements Killable {
     private final Arrow arrow;
     private final List<String> warnings = new ArrayList<>();
     private GameObject killer;
+    private List<Cave> lastShotCaves = new ArrayList<>();
 
     @Override
     public void kill(GameObject killer) {
@@ -83,6 +84,7 @@ public class Player extends GameObject implements Killable {
     }
 
     public void shoot(List<Cave> caves) {
+        lastShotCaves = caves;
         this.warnings.clear();
         for (Cave cave : caves) {
             shootSingle(cave);
@@ -115,4 +117,9 @@ public class Player extends GameObject implements Killable {
         return 4;
     }
 
+    public int[] getLastShotCaves() {
+        int[] caves = lastShotCaves.stream().mapToInt(Cave::getNumber).toArray();
+        lastShotCaves.clear();
+        return caves;
+    }
 }

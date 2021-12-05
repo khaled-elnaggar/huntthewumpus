@@ -1,13 +1,14 @@
 package presenter;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WumpusPresenter {
     void startNewGame();
-    void move(int cave);
+    Map<String, int[]> move(int cave);
     int getPlayerCaveIndex();
     boolean isGameOver();
-    int[] shoot(int... cave);
+    Map<String, int[]> shoot(int... cave);
     int getNumberOfArrows();
     List<String> getWarnings();
     int getWumpusCaveIndex();

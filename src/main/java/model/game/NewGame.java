@@ -40,21 +40,29 @@ public class NewGame implements Game {
     }
 
     @Override
-    public void playerMovesToCave(int cave) {
+    public Map<String, int[]> playerMovesToCave(int cave) {
         Cave caveToMoveTo = gameMap.getCaves().get(cave);
         boolean successfulMove = player.move(caveToMoveTo);
         if (successfulMove) {
             doEnemyPlayerActions();
         }
+        return getEachPlayerShotCaves();
     }
 
     @Override
-    public int[] playerShootsToCave(int... caves) {
+    public Map<String, int[]> playerShootsToCave(int... caves) {
         List<Cave> cavesToShoot = this.validateCavesToShootAt(player.getCave(), caves);
         player.shoot(cavesToShoot);
         doWumpusPostShootActions();
         doEnemyPlayerActions();
-        return cavesToShoot.stream().mapToInt(Cave::getNumber).toArray();
+        return getEachPlayerShotCaves();
+    }
+
+    private Map<String, int[]> getEachPlayerShotCaves() {
+        Map<String, int[]> playersAndShotCaves = new HashMap<>();
+        playersAndShotCaves.put("player", player.getLastShotCaves());
+        playersAndShotCaves.put("enemy player", enemyPlayer.getLastShotCaves());
+        return playersAndShotCaves;
     }
 
     private void doWumpusPostShootActions() {

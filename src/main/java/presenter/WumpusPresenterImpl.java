@@ -5,6 +5,7 @@ import model.game.NewGame;
 import utilities.RandomNumberGenerator;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class WumpusPresenterImpl implements WumpusPresenter {
@@ -24,12 +25,12 @@ public class WumpusPresenterImpl implements WumpusPresenter {
     }
 
     @Override
-    public void move(int cave) {
-        gameModel.playerMovesToCave(cave);
+    public Map<String, int[]> move(int cave) {
+        return gameModel.playerMovesToCave(cave);
     }
 
     @Override
-    public int[] shoot(int... cave) {
+    public Map<String, int[]> shoot(int... cave) {
         return gameModel.playerShootsToCave(cave);
     }
 
@@ -88,7 +89,6 @@ public class WumpusPresenterImpl implements WumpusPresenter {
     public int[] getBatCaves() {
         return gameModel.getBatsCaves();
     }
-
 
     @Override
     public int getPlayerCaveIndex() {
