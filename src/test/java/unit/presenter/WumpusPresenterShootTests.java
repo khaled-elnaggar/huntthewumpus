@@ -154,9 +154,9 @@ public class WumpusPresenterShootTests {
         final int wumpusCaveCurrLocation = wumpusPresenter.getPlayerCaveIndex();
         assertEquals(wumpusCaveCurrLocation, wumpusCaveLocation);
 
-        final String wokeTheWumpusMessage = "Wumpus woke up & moved";
+        final String wokeTheWumpusMessage = "wumpus woke up & moved";
         final List<String> actualGameMessages = wumpusPresenter.getWarnings();
-        assertTrue(actualGameMessages.containsAll(Arrays.asList(wokeTheWumpusMessage, "Wumpus ate you")));
+        assertTrue(actualGameMessages.containsAll(Arrays.asList(wokeTheWumpusMessage, "wumpus ate you")));
 
         final boolean expectedGameStateGameIsOver = true;
         final boolean actualGameState = wumpusPresenter.isGameOver();
