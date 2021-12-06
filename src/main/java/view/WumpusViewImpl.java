@@ -180,7 +180,7 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
         g.drawImage(wumpusImage, wumpusCaveCoordinates[0] + caveSize / 2 * xOffsetSign, wumpusCaveCoordinates[1] + caveSize / 2 * yOffsetSign, null);
     }
 
-    void drawStartScreen() {
+    void drawStartScreen() throws IOException {
         drawBackgroundMap();
         g.setColor(new Color(0xDDFFFFFF, true));
         g.fillRect(0, 0, getWidth(), getHeight() - 60);
@@ -193,6 +193,20 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
         g.drawString("left-click to move, right-click to shoot", 210, 310);
         g.drawString("be aware that hazards may be in the same cave", 175, 345);
         g.drawString("click to start", 310, 380);
+
+        if (wumpusPresenter.hasPlayerWon()) {
+            drawEndGameImage("won.png");
+        }
+
+        if (wumpusPresenter.isGameLost()) {
+            drawEndGameImage("lost.png");
+        }
+    }
+
+    private void drawEndGameImage(String imageName) throws IOException {
+        int imageLength = 300;
+        Image winImage = createImageObject(imageName, imageLength, imageLength);
+        g.drawImage(winImage, PANEL_WIDTH - imageLength - 20, PANEL_HEIGHT - imageLength - 20, null);
     }
 
     void drawCaves() throws IOException {
