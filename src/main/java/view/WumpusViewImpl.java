@@ -320,7 +320,7 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
                 g.drawString("& " + messages.get(3), 20, getHeight() - 37);
             }
 
-            drawShotCavesMessage(actualPlayerCavesShot, "You shot cave(s): ", 20);
+            drawShotCavesMessage(actualPlayerCavesShot, "You shot cave(s): ", 25);
 
             if (CHEAT_MODE) {
                 drawShotCavesMessage(enemyPlayerCavesShot, "Enemy shot cave(s): ", 10);
@@ -333,7 +333,7 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
             String shotCavesMessage = Arrays.stream(shotCavesArray)
                     .mapToObj(String::valueOf)
                     .collect(joining(", ", message, ""));
-            g.drawString(shotCavesMessage, PANEL_WIDTH / 2, getHeight() - bottomOffset);
+            g.drawString(shotCavesMessage, 20, getHeight() - bottomOffset);
         }
     }
 
