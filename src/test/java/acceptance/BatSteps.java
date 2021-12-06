@@ -13,13 +13,13 @@ public class BatSteps {
         this.gameWorld = gameWorld;
     }
 
-    @And("bat {int} is in cave {int}")
+    @And("bat {int} starts in cave {int}")
     public void aBatIsInCave(int batNumber, int cave) {
         gameWorld.getRNGBuilder().setBatStartingCave(batNumber, cave);
     }
 
-    @And("bat will teleport (enemy )player to cave {int} and itself to cave {int}")
-    public void batWillTeleportPlayerToCaveAndItselfToCave(int playerCave, int batCave) {
+    @And("bat teleports (enemy )player to cave {int} and itself to cave {int}")
+    public void batTeleportsPlayerToCaveAndItselfToCave(int playerCave, int batCave) {
         gameWorld.getRNGBuilder().addCaveToTeleportTo(playerCave);
         gameWorld.getRNGBuilder().addCaveToTeleportTo(batCave);
     }

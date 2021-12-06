@@ -1,17 +1,17 @@
-Feature: Game is initialized correctly
+Feature: Game starts initialized correctly
 
   As the player
   I want the game map to be initialized with the right objects
   So that I can start playing and have fun
 
   Background:
-    Given player is in cave 0
-    And enemy player is in cave 5
-    And wumpus is in cave 18
-    And bat 1 is in cave 19
-    And bat 2 is in cave 13
-    And pit 1 is in cave 3
-    And pit 2 is in cave 13
+    Given player starts in cave 0
+    And enemy player starts in cave 5
+    And wumpus starts in cave 18
+    And bat 1 starts in cave 19
+    And bat 2 starts in cave 13
+    And pit 1 starts in cave 3
+    And pit 2 starts in cave 13
 
   Scenario: Number of game objects initialize correctly
   Game should start with 1 player, 1 enemy player, 2 bats and 1 pit

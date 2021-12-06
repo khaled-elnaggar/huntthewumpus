@@ -16,7 +16,7 @@ public interface WumpusPresenter {
 
     boolean isWumpusDead();
 
-    boolean hasPlayerWon();
+    boolean isGameWon();
 
     boolean isPlayerDead();
 

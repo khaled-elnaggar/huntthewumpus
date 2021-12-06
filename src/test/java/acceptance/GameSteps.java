@@ -33,37 +33,34 @@ public class GameSteps {
     }
 
     private void throwSanityError(Scenario scenario) throws Exception {
-        String causeOfFailure = "while you did not start any action! You setup but did not take any move";
-        String remainingActions = "";
-
-        if (!gameWorld.getActionsToExecute().isEmpty()) {
-            causeOfFailure = "while some actions remain queued and did not execute!";
-            remainingActions =
-                    "\n\tThe remaining actions are:"
-                            + gameWorld.getActionsToExecute().stream().map(Action::toString).collect(Collectors.joining("\n\t\t -", "\n\t\t -", ""));
-        }
-
+        String causeOfFailure = getCauseOfFailure(gameWorld.getActionsToExecute().isEmpty());
+        String remainingActions = getRemainingActions(gameWorld.getActionsToExecute().isEmpty());
         String errorMessage =
                 "\n\nScenario \"" + scenario.getName() + "\"" + " passed " + causeOfFailure
-                        + "\n\tfind it at @" + scenario.getUri() + ":" + scenario.getLine()
                         + remainingActions
+                        + "\n\tfind it at @" + scenario.getUri() + ":" + scenario.getLine()
                         + "\n";
 
         throw new Exception(errorMessage);
     }
 
-
-    @And("pit {int} is in cave {int}")
-    public void pitIsInCave(int pitNumber, int cave) {
-        gameWorld.getRNGBuilder().setPitStartingCave(pitNumber, cave);
+    private String getRemainingActions(boolean empty) {
+        if (empty) return "";
+        return "\n\tThe remaining actions are:"
+                + gameWorld.getActionsToExecute().stream()
+                .map(Action::toString)
+                .collect(Collectors.joining("\n\t\t -", "\n\t\t -", ""));
     }
 
-    @Then("game is over")
-    public void gameIsOver() {
-        WumpusPresenter wumpusPresenter = gameWorld.executeActionsAndGetWumpusPresenter();
-        final boolean expectedStatusOfGameIsOver = true;
-        final boolean isGameOver = wumpusPresenter.isGameOver();
-        assertEquals(isGameOver, expectedStatusOfGameIsOver);
+    private String getCauseOfFailure(boolean empty) {
+        if (empty) return "while you did not start any action! You setup but did not take any move";
+        return "while some actions remain queued and did not execute!";
+    }
+
+
+    @And("pit {int} starts in cave {int}")
+    public void pitStartsInCave(int pitNumber, int cave) {
+        gameWorld.getRNGBuilder().setPitStartingCave(pitNumber, cave);
     }
 
     @And("game is still on")
@@ -76,7 +73,7 @@ public class GameSteps {
 
     @And("game is won")
     public void gameIsWon() {
-        assertTrue(gameWorld.executeActionsAndGetWumpusPresenter().hasPlayerWon());
+        assertTrue(gameWorld.executeActionsAndGetWumpusPresenter().isGameWon());
     }
 
     @And("game is lost")
@@ -84,8 +81,8 @@ public class GameSteps {
         assertTrue(gameWorld.executeActionsAndGetWumpusPresenter().isGameLost());
     }
 
-    @But("cave {int} is not linked to {int}, so arrow will go to {int} instead")
-    public void caveIsNotLinkedToSoArrowWillGotToInstead(int wrongCave, int currentCave, int nextRandomCave) throws Exception {
+    @But("cave {int} is not linked to {int}, so arrow goes to {int} instead")
+    public void caveIsNotLinkedToSoArrowGoesToInstead(int wrongCave, int currentCave, int nextRandomCave) throws Exception {
         int caveIndex = GameInitialConfigurations.getCaveIndexOutOfCave(currentCave, nextRandomCave);
         gameWorld.getRNGBuilder().setNextRandomCaveForArrow(caveIndex);
     }
@@ -103,7 +100,7 @@ public class GameSteps {
     }
 
     @Then("there is/are {int} {string}")
-    public void thereIsPlayer(int expectedNumber, String objectName) {
+    public void thereIs(int expectedNumber, String objectName) {
         if (objectName.endsWith("s")) {
             objectName = objectName.substring(0, objectName.length() - 1);
         }

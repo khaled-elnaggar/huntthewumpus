@@ -71,11 +71,13 @@ public class GameMap {
                 final Cave validCave = getCaves().get(arrowNextCave);
                 validCavesToShootAt.add(validCave);
             } else {
-                final int randomCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_LINKED_CAVES);
-                validCavesToShootAt.add(arrowCurrentCave.getLinkedCaves().get(randomCaveIndex));
+                final int randomLinkedCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_LINKED_CAVES);
+                final Cave randomLiknedCave = arrowCurrentCave.getLinkedCaves().get(randomLinkedCaveIndex);
+                validCavesToShootAt.add(randomLiknedCave);
             }
             arrowCurrentCave = validCavesToShootAt.get(validCavesToShootAt.size() - 1);
         }
+
         return validCavesToShootAt;
     }
 }

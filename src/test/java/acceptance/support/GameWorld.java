@@ -46,11 +46,11 @@ public class GameWorld {
     }
 
     public WumpusPresenter getWumpusPresenter() {
-        initializeWumpus();
+        initializePresenter();
         return this.wumpusPresenter;
     }
 
-    private void initializeWumpus() {
+    private void initializePresenter() {
         if (this.wumpusPresenter == null) {
             RandomNumberGenerator randomNumberGenerator = RNGBuilder.build();
             this.wumpusPresenter = new WumpusPresenterImpl(randomNumberGenerator);

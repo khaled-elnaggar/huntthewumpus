@@ -16,15 +16,15 @@ public class Player extends GameObject implements Killable, Killer {
     private String playerKillMessage;
     private String wumpusKillMessage;
 
+    public Player(int numberOfArrows) {
+        arrow = new Arrow(numberOfArrows);
+    }
+
     @Override
     public void kill(Killer killer) {
         this.dead = true;
         this.killer = killer;
         warnings.add(killer.getPlayerKillMessage());
-    }
-
-    public Player(int numberOfArrows) {
-        arrow = new Arrow(numberOfArrows);
     }
 
     public boolean move(Cave caveToMoveTo) {

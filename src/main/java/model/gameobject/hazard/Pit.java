@@ -11,10 +11,6 @@ public class Pit extends Hazard implements Killer {
         return warningInTheLinkedCave;
     }
 
-    public String getWarningInTheSameCave() {
-        return warningInTheSameCave;
-    }
-
     @Override
     public void executeActionOnPlayer(Player player) {
         player.kill(this);

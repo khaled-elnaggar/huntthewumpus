@@ -20,13 +20,13 @@ public class EnemySteps {
         this.gameWorld = gameWorld;
     }
 
-    @And("enemy player is in cave {int}")
-    public void enemyPlayerIsInCave(int cave) {
+    @And("enemy player starts in cave {int}")
+    public void enemyPlayerStartsInCave(int cave) {
         gameWorld.getRNGBuilder().setEnemyPlayerStartingCave(cave);
     }
 
     @And("enemy player moves from cave {int} to cave {int}")
-    public void enemyPlayerWillWakeUpAndMoveToCave(int currentCave, int caveToMoveTo) throws Exception {
+    public void enemyPlayerMovesFromCaveToCave(int currentCave, int caveToMoveTo) throws Exception {
         int caveIndex = GameInitialConfigurations.getCaveIndexOutOfCave(currentCave, caveToMoveTo);
         gameWorld.getRNGBuilder().makeEnemyPlayerMoveToCave(caveIndex);
     }
@@ -38,30 +38,30 @@ public class EnemySteps {
     }
 
     @And("enemy player uses all arrows")
-    public void enemyPlayerUsesAllArrowsOnCave() {
+    public void enemyPlayerUsesAllArrows() {
         int enemyRemainingArrows = gameWorld.executeActionsAndGetWumpusPresenter().getEnemyRemainingArrows();
         for (int i = 0; i < enemyRemainingArrows; i++) {
             gameWorld.getRNGBuilder().makeEnemyPlayerShootAtCaves(Collections.singletonList(1));
 
             final int playerCave = gameWorld.executeActionsAndGetWumpusPresenter().getPlayerCaveIndex();
-            final int secondLinkedCave = GameInitialConfigurations.CAVE_LINKS[playerCave][1];
-            gameWorld.queueAction(new MoveAction(secondLinkedCave));
+            final int playerMiddleCave = GameInitialConfigurations.CAVE_LINKS[playerCave][1];
+            gameWorld.queueAction(new MoveAction(playerMiddleCave));
         }
     }
 
     @Then("enemy player will be at cave {int}")
-    public void enemyWillBeAtCave(int expectedCave) {
+    public void enemyPlayerWillBeAtCave(int expectedCave) {
         final int actualWumpusCave = gameWorld.executeActionsAndGetWumpusPresenter().getEnemyPlayerCave();
         assertEquals(expectedCave, actualWumpusCave);
     }
 
     @And("enemy player will be dead")
-    public void enemyPlayerIsDead() {
+    public void enemyPlayerWillBeDead() {
         assertTrue(gameWorld.executeActionsAndGetWumpusPresenter().isEnemyPlayerDead());
     }
 
     @And("enemy player will have {int} arrows")
-    public void enemyPlayerHasArrows(int remainingArrows) {
+    public void enemyPlayerWillHaveArrows(int remainingArrows) {
         int enemyRemainingArrows = gameWorld.executeActionsAndGetWumpusPresenter().getEnemyRemainingArrows();
         assertEquals(remainingArrows, enemyRemainingArrows);
     }
