@@ -40,7 +40,7 @@ public class Wumpus extends Hazard implements Killable, Killer {
     public void wakeup(int randomLinkedCaveIndex) {
         this.move(randomLinkedCaveIndex);
         final List<Player> players = this.getCave().getPlayers();
-        players.forEach(player -> player.addAWarning("wumpus woke up & moved"));
+        messages.add("wumpus woke up & moved");
         players.forEach(this::executeActionOnPlayer);
     }
 

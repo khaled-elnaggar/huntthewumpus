@@ -32,7 +32,6 @@ public class Player extends GameObject implements Killable, Killer {
         }
         changeMyCaveLocationTo(caveToMoveTo);
         executePostMoveActions();
-        senseWarnings();
         return true;
     }
 
@@ -44,7 +43,6 @@ public class Player extends GameObject implements Killable, Killer {
         changeMyCaveLocationTo(caveToMoveTo);
         addAWarning("a bat dropped you in a random cave");
         executePostMoveActions();
-        senseWarnings();
     }
 
     private void changeMyCaveLocationTo(Cave caveToMoveTo) {
@@ -104,6 +102,7 @@ public class Player extends GameObject implements Killable, Killer {
     }
 
     public List<String> getWarnings() {
+        if (!isDead()) senseWarnings();
         return new ArrayList<>(warnings);
     }
 
@@ -124,7 +123,8 @@ public class Player extends GameObject implements Killable, Killer {
     public String getPlayerKillMessage() {
         return this.playerKillMessage;
     }
-    public String getWumpusKilledMessage(){
+
+    public String getWumpusKilledMessage() {
         return this.wumpusKillMessage;
     }
 

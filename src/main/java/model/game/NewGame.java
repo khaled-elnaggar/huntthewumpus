@@ -106,8 +106,8 @@ public class NewGame implements Game {
 
     @Override
     public List<String> getWarnings() {
-        List<String> messages = player.getWarnings();
-        messages.addAll(wumpus.getMessages());
+        List<String> messages =wumpus.getMessages();
+        messages.addAll(player.getWarnings());
         return messages;
     }
 
