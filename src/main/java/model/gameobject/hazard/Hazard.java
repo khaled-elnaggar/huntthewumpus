@@ -7,6 +7,4 @@ public abstract class Hazard extends GameObject {
     public abstract void executeActionOnPlayer(Player player);
 
     public abstract String getWarningInTheLinkedCave();
-
-    public abstract String getWarningInTheSameCave();
 }

@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import presenter.WumpusPresenter;
 import unit.support.MockedRandomNumberGeneratorWorld;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -153,9 +154,9 @@ public class WumpusPresenterShootTests {
         final int wumpusCaveCurrLocation = wumpusPresenter.getPlayerCaveIndex();
         assertEquals(wumpusCaveCurrLocation, wumpusCaveLocation);
 
-        final String wokeTheWumpusMessage = "You woke the Wumpus and it ate you";
+        final String wokeTheWumpusMessage = "Wumpus woke up & moved";
         final List<String> actualGameMessages = wumpusPresenter.getWarnings();
-        assertTrue(actualGameMessages.contains(wokeTheWumpusMessage));
+        assertTrue(actualGameMessages.containsAll(Arrays.asList(wokeTheWumpusMessage, "Wumpus ate you")));
 
         final boolean expectedGameStateGameIsOver = true;
         final boolean actualGameState = wumpusPresenter.isGameOver();

@@ -4,16 +4,21 @@ import model.gamemap.Cave;
 import model.game.GameInitialConfigurations;
 import model.gameobject.GameObject;
 import model.gameobject.Killable;
+import model.gameobject.Killer;
 import model.gameobject.Player;
 import utilities.RandomNumberGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class Wumpus extends Hazard implements Killable {
-    final String warningInTheSameCave = "You woke the Wumpus and it ate you";
+
+public class Wumpus extends Hazard implements Killable, Killer {
+    final String warningInTheSameCave = "wumpus ate you";
     final String warningInTheLinkedCave = "there's an awful smell";
     private final RandomNumberGenerator randomNumberGenerator;
     boolean dead;
-    private GameObject killer;
+    private Killer killer;
+    private List<String> messages = new ArrayList<>();
 
     public Wumpus(RandomNumberGenerator randomNumberGenerator) {
         this.randomNumberGenerator = randomNumberGenerator;
@@ -22,7 +27,6 @@ public class Wumpus extends Hazard implements Killable {
     @Override
     public void executeActionOnPlayer(Player player) {
         player.kill(this);
-        player.addAWarning(this.warningInTheSameCave);
     }
 
     public void attemptToWakeup() {
@@ -35,7 +39,9 @@ public class Wumpus extends Hazard implements Killable {
 
     public void wakeup(int randomLinkedCaveIndex) {
         this.move(randomLinkedCaveIndex);
-        this.getCave().getPlayers().forEach(this::executeActionOnPlayer);
+        final List<Player> players = this.getCave().getPlayers();
+        players.forEach(player -> player.addAWarning("wumpus woke up & moved"));
+        players.forEach(this::executeActionOnPlayer);
     }
 
     private void move(int randomLinkedCaveIndex) {
@@ -51,9 +57,10 @@ public class Wumpus extends Hazard implements Killable {
     }
 
     @Override
-    public void kill(GameObject killer) {
+    public void kill(Killer killer) {
         this.dead = true;
         this.killer = killer;
+        messages.add(((Player) killer).getWumpusKilledMessage());
     }
 
     @Override
@@ -72,7 +79,15 @@ public class Wumpus extends Hazard implements Killable {
     }
 
     @Override
-    public String getWarningInTheSameCave() {
-        return this.warningInTheSameCave;
+    public String getPlayerKillMessage() {
+        return warningInTheSameCave;
+    }
+
+    public void clearMessages() {
+        messages.clear();
+    }
+
+    public List<String> getMessages() {
+        return new ArrayList<>(messages);
     }
 }

@@ -27,7 +27,7 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
 
     WumpusPresenter wumpusPresenter;
     public static final int PANEL_WIDTH = 721;
-    public static final int PANEL_HEIGHT = 687;
+    public static final int PANEL_HEIGHT = 717;
     private Mode currentMode;
     private long animationStartTime;
 
@@ -311,8 +311,6 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
             if (CHEAT_MODE) {
                 drawShotCavesMessage(enemyPlayerCavesShot, "Enemy shot cave(s): ", 20);
             }
-
-            messages.clear();
         }
     }
 

@@ -87,7 +87,7 @@ public class PlayerMoveTests {
         assertEquals(gameIsOver, actualGameState);
 
         List<String> messages = game.getWarnings();
-        assertTrue(messages.contains(game.getWumpus().getWarningInTheSameCave()));
+        assertTrue(messages.contains(game.getWumpus().getPlayerKillMessage()));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class PlayerMoveTests {
         assertEquals(actualGameState, gameIsOver);
 
         List<String> messages = game.getWarnings();
-        assertTrue(messages.contains(game.getPits().get(0).getWarningInTheSameCave()));
+        assertTrue(messages.contains(game.getPits().get(0).getPlayerKillMessage()));
     }
 
     @Test

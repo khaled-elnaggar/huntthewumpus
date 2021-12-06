@@ -1,7 +1,7 @@
 package model.gameobject;
 
 public interface Killable {
-    void kill(GameObject killer);
+    void kill(Killer killer);
     boolean wasKilledBy(GameObject killer);
     boolean isDead();
 }

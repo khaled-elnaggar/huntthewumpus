@@ -38,11 +38,6 @@ public class Bat extends Hazard {
     }
 
     @Override
-    public String getWarningInTheSameCave() {
-        return this.warningInTheSameCave;
-    }
-
-    @Override
     public int getPrecedence() {
         return 3;
     }

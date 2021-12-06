@@ -1,6 +1,7 @@
 package model.gamemap;
 
 import model.game.GameInitialConfigurations;
+import model.game.NewGame;
 import utilities.RandomNumberGenerator;
 
 import java.util.ArrayList;
@@ -22,20 +23,6 @@ public class GameMap {
         buildCaveLinks();
     }
 
-    public Cave getRandomCave() {
-        int randomCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_CAVES);
-        return caves.get(randomCaveIndex);
-    }
-
-    public Cave getACaveThatMeetsCondition(Predicate<Cave> condition) {
-        Cave caveThatMeetsCondition;
-        do {
-            caveThatMeetsCondition = getRandomCave();
-            } while (!condition.test(caveThatMeetsCondition));
-
-        return caveThatMeetsCondition;
-    }
-
     private void buildCaves() {
         for (int i = 0; i < GameInitialConfigurations.NUMBER_OF_CAVES; i++) {
             caves.add(new Cave(i));
@@ -53,7 +40,43 @@ public class GameMap {
         }
     }
 
+    public Cave getRandomCave() {
+        int randomCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_CAVES);
+        return caves.get(randomCaveIndex);
+    }
+
+    public Cave getRandomCaveLinkedTo(Cave cave) {
+        final int randomCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_LINKED_CAVES);
+        return cave.getLinkedCaves().get(randomCaveIndex);
+    }
+
+    public Cave getACaveThatMeetsCondition(Predicate<Cave> condition) {
+        Cave caveThatMeetsCondition;
+        do {
+            caveThatMeetsCondition = getRandomCave();
+            } while (!condition.test(caveThatMeetsCondition));
+
+        return caveThatMeetsCondition;
+    }
+
     public List<Cave> getCaves() {
         return this.caves;
+    }
+
+    public List<Cave> validateCavesToShootAtAreLinked(Cave arrowStartingCave, int[] cavesArrayToShoot, NewGame newGame) {
+        List<Cave> validCavesToShootAt = new ArrayList<>();
+
+        Cave arrowCurrentCave = arrowStartingCave;
+        for (int arrowNextCave : cavesArrayToShoot) {
+            if (arrowCurrentCave.isLinkedTo(arrowNextCave)) {
+                final Cave validCave = getCaves().get(arrowNextCave);
+                validCavesToShootAt.add(validCave);
+            } else {
+                final int randomCaveIndex = randomNumberGenerator.generateNumber(GameInitialConfigurations.NUMBER_OF_LINKED_CAVES);
+                validCavesToShootAt.add(arrowCurrentCave.getLinkedCaves().get(randomCaveIndex));
+            }
+            arrowCurrentCave = validCavesToShootAt.get(validCavesToShootAt.size() - 1);
+        }
+        return validCavesToShootAt;
     }
 }

@@ -34,6 +34,8 @@ public class NewGameInitializer {
     private void initializePlayer() {
         player = new Player(GameInitialConfigurations.NUMBER_OF_ARROWS);
         player.setId(GameInitialConfigurations.PLAYER_ID);
+        player.setPlayerKillMessage("you shot yourself");
+        player.setWumpusKillMessage("you shot the wumpus!");
         Cave cave1 = gameMap.getACaveThatMeetsCondition(cave -> true);
         cave1.addPlayer(player);
         player.setCave(cave1);
@@ -42,6 +44,8 @@ public class NewGameInitializer {
     private void initializeEnemyPlayer() {
         enemyPlayer = new Player(GameInitialConfigurations.NUMBER_OF_ARROWS);
         enemyPlayer.setId("Enemy " + GameInitialConfigurations.PLAYER_ID);
+        enemyPlayer.setPlayerKillMessage("enemy player shot you!");
+        enemyPlayer.setWumpusKillMessage("enemy player shot the wumpus!");
         Cave startingCave = gameMap.getACaveThatMeetsCondition(cave -> true);
         startingCave.addPlayer(enemyPlayer);
         enemyPlayer.setCave(startingCave);
