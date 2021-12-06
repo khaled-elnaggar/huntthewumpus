@@ -23,7 +23,7 @@ import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class WumpusViewImpl extends JPanel implements WumpusView {
-    private static final boolean CHEAT_MODE = false;
+    private static final boolean CHEAT_MODE = true;
 
     WumpusPresenter wumpusPresenter;
     public static final int PANEL_WIDTH = 721;
@@ -320,10 +320,10 @@ public class WumpusViewImpl extends JPanel implements WumpusView {
                 g.drawString("& " + messages.get(3), 20, getHeight() - 37);
             }
 
-            drawShotCavesMessage(actualPlayerCavesShot, "You shot cave(s): ", 40);
+            drawShotCavesMessage(actualPlayerCavesShot, "You shot cave(s): ", 20);
 
             if (CHEAT_MODE) {
-                drawShotCavesMessage(enemyPlayerCavesShot, "Enemy shot cave(s): ", 20);
+                drawShotCavesMessage(enemyPlayerCavesShot, "Enemy shot cave(s): ", 10);
             }
         }
     }
